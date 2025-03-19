@@ -50,7 +50,7 @@ arXiv: https://arxiv.org/abs/2503.12249
 To cite MCD in publications, please use:
 
 ```bibtex
-@article{chen2024advancing,
+@article{chen2025minuscule,
       title={Minuscule Cell Detection in AS-OCT Images with Progressive Field-of-View Focusing}, 
       author={Boyu Chen, Ameenat L. Solebo, Daqian Shi, Jinge Wu, Paul Taylor},
       year={2025},
