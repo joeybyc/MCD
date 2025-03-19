@@ -31,12 +31,24 @@ wget -P ./models/ https://dl.fbaipublicfiles.com/segment_anything/sam_vit_h_4b89
 to download the ViT model.
 
 ## Getting Started
+
+### Process one image
 To process an image, segment the AC area, and detect cells, run the following command:
 ```
 python -m apps.detect-cell
 ```
 By default, this command will process the image located at `/example_datasets/patient1/image1.png`. The output will be saved in the `output/output_one_image` directory.
 
+### Showcase
+After running `python -m apps.detect-cell`, intermediate stage images will also be generated. Below are examples of the generated images for the sample input image.
+#### Original image
+![](example_datasets/patient1/image1.png)
+#### Anterior Chamber Mask
+![](output/output_one_image/image1/image_with_AC_mask.png)
+#### Cell Dection by MCD
+![](output/output_one_image/image1/image_with_cell_boxes.png)
+
+### Process images in a folder
 To process a list of images, run the following command:
 ```
 python -m apps.detect-cell-all
