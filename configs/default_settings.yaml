@@ -1,0 +1,4 @@
+infer_threshold:
+  threshold_lambda: 0.83
+  lower_bound: 1
+  upper_bound: 25

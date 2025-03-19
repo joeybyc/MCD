@@ -1,0 +1,10 @@
+numpy==1.26.3
+matplotlib==3.8.2
+pandas==2.1.4
+opencv-python==4.9.0.80
+torch==2.1.2
+torchvision==0.16.2
+scikit-image==0.22.0
+scikit-learn==1.4.0
+yacs==0.1.8
+segment-anything @ git+https://github.com/facebookresearch/segment-anything.git@6fdee8f2727f4506cfbbe553e23b895e27956588
