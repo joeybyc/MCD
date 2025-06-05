@@ -3,4 +3,4 @@ infer_threshold:
   lower_bound: 1
   upper_bound: 25
 boudning_box:
-  size: 30
+  size: 10
