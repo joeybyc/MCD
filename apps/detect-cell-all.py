@@ -78,6 +78,34 @@ def save_centroids_to_csv(cell_centroids, candidate_cell_centroids, output_path)
         writer.writerows(data)
 
 
+def save_cropped_cells(image_path, cell_centroids, box_size, output_folder, base_filename):
+    """
+    Crop and save detected cell regions from the image.
+
+    Args:
+        image_path (str): Path to the original image.
+        cell_centroids (list of tuples): List of (x, y) center coordinates for each cell.
+        box_size (int): Size of the square crop (box_size x box_size).
+        output_folder (str): Directory where cropped images will be saved.
+        base_filename (str): Base filename used to generate output names.
+    """
+    image = cv2.imread(image_path)
+    height, width = image.shape[:2]
+    half_size = box_size // 2
+
+    os.makedirs(output_folder, exist_ok=True)
+
+    for idx, (x, y) in enumerate(cell_centroids):
+        x, y = int(x), int(y)
+        x1 = max(x - half_size, 0)
+        y1 = max(y - half_size, 0)
+        x2 = min(x + half_size, width)
+        y2 = min(y + half_size, height)
+
+        cropped = image[y1:y2, x1:x2]
+        crop_filename = os.path.join(output_folder, f"{base_filename}_cell_{idx}.png")
+        cv2.imwrite(crop_filename, cropped)
+
 
 
 # ===================================== Process all images ============================================================
@@ -121,14 +149,15 @@ def process_single_image(
         point_prompts = results['point_prompts']
         candidate_cell_mask = results['candidate_cell_mask']
         cell_mask = results['cell_mask']
+        box_size = params['box_size']
         cell_centroids = get_centroids(cell_mask)
         candidate_cell_centroids = get_centroids(candidate_cell_mask)
         
         # Save visualizations and results
         green_color = '#00FF00'
         red_color = '#FF0000'
-        image_with_cell_boxes = draw_square(image_path, cell_centroids, box_outline=green_color)
-        image_with_candidate_cell_boxes = draw_square(image_path, candidate_cell_centroids, box_outline=red_color)
+        image_with_cell_boxes = draw_square(image_path, cell_centroids, box_size=box_size, box_outline=green_color)
+        image_with_candidate_cell_boxes = draw_square(image_path, candidate_cell_centroids, box_size=box_size, box_outline=red_color)
         
         # Save outputs
         cv2.imwrite(os.path.join(output_folder, 'chamber_mask.png'), chamber_mask)
@@ -142,6 +171,16 @@ def process_single_image(
             os.path.join(output_folder, 'centroids.csv')
         )
         
+        # Save cropped cells
+        cropped_cells_folder = os.path.join(output_folder, "cropped_cells")
+        save_cropped_cells(
+            image_path=image_path,
+            cell_centroids=cell_centroids,
+            box_size=box_size,
+            output_folder=cropped_cells_folder,
+            base_filename=image_name
+        )
+
         # Create mask overlay
         overlay_transparent_mask(
             image_path,
@@ -234,7 +273,8 @@ if __name__ == "__main__":
         "threshold_lambda": cfg.infer_threshold.threshold_lambda,
         "lower_bound": cfg.infer_threshold.lower_bound,
         "upper_bound": cfg.infer_threshold.upper_bound,
-        "device": device
+        "device": device,
+        "box_size": cfg.boudning_box.size
     }
     
     # Process all images
