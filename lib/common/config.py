@@ -15,6 +15,15 @@ _C.sam_model.model_type = "vit_h"
 # _C.sam_model.model_type = "vit_b"
 
 _C.dataset = CN()
+_C.dataset.root = ""
+_C.dataset.train = ""
+_C.dataset.val = ""
+_C.dataset.test = ""
+
+# Model saving config
+_C.model = CN()
+_C.model.folder = ""
+_C.model.name = ""
 
 
 _C.cell_classifier = CN()

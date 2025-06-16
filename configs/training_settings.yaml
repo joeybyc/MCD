@@ -1,0 +1,8 @@
+dataset:
+  root: "example_data"
+  train: "train"
+  val: "val"
+  test: "test"
+model:
+  folder: "models"
+  name: "trained_model.pth"
