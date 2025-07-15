@@ -132,7 +132,7 @@ dataset_folder = cfg.dataset.root
 print(f'The device is {torch.device("cuda" if torch.cuda.is_available() else "cpu")}')
 # Load datasets
 
-img_size = 20
+img_size = cfg.cell_classifier.size_L
 transform = transforms.Compose([transforms.ToPILImage(), transforms.Resize((img_size, img_size)), transforms.ToTensor()])
 transform_train = transforms.Compose([
     transforms.ToPILImage(),
