@@ -1,0 +1,29 @@
+# Development dependencies for ASOCT-MCD package
+# Include base requirements
+-r requirements.txt
+
+# Testing
+pytest>=7.0.0
+pytest-cov>=4.0.0
+pytest-mock>=3.8.0
+pytest-xdist>=3.0.0
+
+# Code formatting and linting
+black>=22.0.0
+isort>=5.10.0
+flake8>=5.0.0
+mypy>=0.991
+
+# Documentation
+sphinx>=5.0.0
+sphinx-rtd-theme>=1.0.0
+myst-parser>=0.18.0
+
+# Development tools
+pre-commit>=2.20.0
+twine>=4.0.0
+build>=0.8.0
+
+# Jupyter for examples
+jupyter>=1.0.0
+jupyterlab>=3.4.0
