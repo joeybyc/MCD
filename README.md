@@ -21,12 +21,13 @@ conda activate MCD # sometimes could be `source activate MCD`
 pip install -r requirements.txt
 ```
 ## Checkpoints
-MCD requires a pre-trained ViT model. Download the model from the [ViT-H SAM model](https://dl.fbaipublicfiles.com/segment_anything/sam_vit_h_4b8939.pth) link.
+MCD requires a pre-trained ViT model. Download the model from the [ViT-B SAM model](https://dl.fbaipublicfiles.com/segment_anything/sam_vit_b_01ec64.pth) link.
 The link is provided in the [SAM](https://github.com/facebookresearch/segment-anything?tab=readme-ov-file#model-checkpoints) repository. Put the pre-trained model into the **models** folder.
 
 You can also use
 ```
-wget -P ./models/ https://dl.fbaipublicfiles.com/segment_anything/sam_vit_h_4b8939.pth
+wget -P ./models/ https://dl.fbaipublicfiles.com/segment_anything/sam_vit_b_01ec64.pth
+
 ```
 to download the ViT model.
 
