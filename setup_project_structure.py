@@ -364,3 +364,4 @@ if __name__ == "__main__":
     
     print(f"\nProject structure created in: {os.getcwd()}")
     print("You can now start migrating your existing code to the new structure!")
+    
