@@ -5,31 +5,14 @@ Zero-shot segmentation implementation using vision foundation models.
 """
 
 import numpy as np
-from typing import Protocol, Tuple, Any
-from ..interfaces import BaseSegmentor
-
-
-class ZeroShotModelWrapper(Protocol):
-    """Protocol for zero-shot model wrapper."""
-    
-    def get_mask(self, image: np.ndarray, prompts: Any) -> np.ndarray:
-        """Get segmentation mask using point prompts."""
-        pass
-
-
-class PromptGenerator(Protocol):
-    """Protocol for prompt generator."""
-    
-    def generate(self, image: np.ndarray) -> Any:
-        """Generate prompts for segmentation."""
-        pass
+from ..interfaces import BaseSegmentor, ZeroShotModelWrapper, PromptGeneratorWrapper
 
 
 class ZeroShotSegmentor(BaseSegmentor):
     """Zero-shot segmentation using model wrapper and prompt generator."""
     
     def __init__(self, model_wrapper: ZeroShotModelWrapper, 
-                 prompt_generator: PromptGenerator):
+                 prompt_generator: PromptGeneratorWrapper):
         """
         Initialize zero-shot segmentor with dependencies.
         

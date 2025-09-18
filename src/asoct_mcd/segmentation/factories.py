@@ -4,8 +4,8 @@ Author: B. Chen
 Factory classes for creating segmentation components.
 """
 
-from typing import Dict, Type, Any
-from .interfaces import BaseSegmentor
+from typing import Dict, Type
+from .interfaces import BaseSegmentor, ZeroShotModelWrapper, TrainedModelWrapper, PromptGeneratorWrapper
 from .implementations.zero_shot import ZeroShotSegmentor
 from .implementations.trained import TrainedSegmentor
 

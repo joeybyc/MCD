@@ -5,16 +5,8 @@ Trained segmentation model implementation (e.g., UNet).
 """
 
 import numpy as np
-from typing import Protocol
-from ..interfaces import BaseSegmentor
+from ..interfaces import BaseSegmentor, TrainedModelWrapper
 
-
-class TrainedModelWrapper(Protocol):
-    """Protocol for trained model wrapper."""
-    
-    def get_mask(self, image: np.ndarray) -> np.ndarray:
-        """Get segmentation mask from direct inference."""
-        pass
 
 class TrainedSegmentor(BaseSegmentor):
     """Segmentation using trained models like UNet."""
