@@ -6,8 +6,8 @@ Factory classes for creating preprocessing components.
 
 from typing import Dict, Type
 from .interfaces import ImageConverter, ImageDenoiser
-from .converters import GrayscaleConverter
-from .denoisers import NLMDenoiser, MedianDenoiser
+from .implementations.converters import GrayscaleConverter
+from .implementations.denoisers import NLMDenoiser, MedianDenoiser
 
 
 class ConverterFactory:

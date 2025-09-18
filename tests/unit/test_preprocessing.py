@@ -12,8 +12,7 @@ from src.asoct_mcd.preprocessing import (
     DenoiserFactory,
     PreprocessingPipeline,
     ImageConverter,
-    ImageDenoiser,
-    GrayscaleDenoiser
+    ImageDenoiser
 )
 
 

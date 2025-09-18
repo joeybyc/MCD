@@ -6,7 +6,7 @@ Image denoising algorithm implementations.
 
 import cv2
 import numpy as np
-from .interfaces import GrayscaleDenoiser
+from ..interfaces import GrayscaleDenoiser
 
 
 class NLMDenoiser(GrayscaleDenoiser):

@@ -6,7 +6,7 @@ Image format conversion implementations.
 
 import cv2
 import numpy as np
-from .interfaces import ImageConverter
+from ..interfaces import ImageConverter
 
 
 class GrayscaleConverter(ImageConverter):

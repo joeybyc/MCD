@@ -10,10 +10,15 @@ from .factories import ConverterFactory, DenoiserFactory
 from .pipeline import PreprocessingPipeline
 
 __all__ = [
+    # Abstract interfaces for user extension
     'ImageConverter',
     'ImageDenoiser', 
     'GrayscaleDenoiser',
+    
+    # Factory classes for creating implementations
     'ConverterFactory',
     'DenoiserFactory',
+    
+    # Pipeline for chaining operations
     'PreprocessingPipeline'
 ]
