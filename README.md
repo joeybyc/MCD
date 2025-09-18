@@ -23,15 +23,6 @@ result = detector.detect("path/to/image.png")
 results = detector.detect_batch("path/to/images/")
 ```
 
-## Features
-
-- Zero-shot cell detection using SAM (Segment Anything Model)
-- Spatial attention networks for fine-grained classification
-- Configurable processing pipeline
-- Batch processing capabilities
-- Command-line interface
-- Extensible architecture with custom components
-
 ## Requirements
 
 - Python >= 3.9
