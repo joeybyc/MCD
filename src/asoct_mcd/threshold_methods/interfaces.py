@@ -30,21 +30,18 @@ class ThresholdMethod(ABC):
         """
         pass
     
-    def apply_threshold(self, image: np.ndarray, lambda_factor: float = 1.0, return_thresh: bool = False):
+    def apply_threshold(self, image: np.ndarray, lambda_factor: float = 1, 
+                    return_thresh: bool = False, output_format: str = 'uint8'):
         """
-        Apply thresholding to the input image.
-        
         Args:
-            image: Input grayscale image
-            lambda_factor: Adjustment factor for threshold value
-            return_thresh: Whether to return threshold value along with mask
-            
-        Returns:
-            Binary mask if return_thresh=False, else tuple of (mask, threshold_value)
+            output_format: 'uint8' for 0/255 format, 'bool' for True/False format
         """
         self._validate_grayscale(image)
         threshold_value = self._calculate_threshold(image) * lambda_factor
         _, mask = cv2.threshold(image, threshold_value, 255, cv2.THRESH_BINARY)
+        
+        if output_format == 'bool':
+            mask = mask.astype(bool)
         
         if return_thresh:
             return mask, threshold_value
