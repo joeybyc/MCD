@@ -8,7 +8,7 @@ where = ["src"]
 
 [project]
 name = "asoct-mcd"
-version = "0.1.0"
+version = "0.2.1"
 description = "Minuscule Cell Detection in AS-OCT Medical Images"
 readme = "README.md"
 license = {text = "MIT"}
@@ -18,7 +18,7 @@ authors = [
 maintainers = [
     {name = "B. Chen"},
 ]
-urls = { text = "https://github.com/joeybyc/MCD" }
+urls = { github = "https://github.com/joeybyc/MCD" }
 keywords = [
     "medical-imaging",
     "cell-detection", 
@@ -48,7 +48,8 @@ dependencies = [
     "scikit-learn>=1.4.0",
     "yacs>=0.1.8",
     "segment-anything>=1.0",
-    "tqdm>=4.67.1"
+    "tqdm>=4.67.1",
+    "requests>=2.32.5"
 ]
 
 requires-python = ">=3.9"

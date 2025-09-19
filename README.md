@@ -17,7 +17,7 @@ from asoct_mcd.pipeline import MCDPipelineBuilder
 pipeline = MCDPipelineBuilder().build()
 
 # Detect cells in image
-result = pipeline.detect_cells("path/to/image.png")
+result = pipeline.detect_cells("image.png")
 
 # Print results
 print(f"Detected {result.cell_count} cells")
@@ -42,6 +42,23 @@ pipeline = MCDPipelineBuilder().from_yaml("your_config.yaml").build()
 result = pipeline.detect_cells("image.png")
 ```
 
+
+## Model Storage and Management
+Default Model Storage Locations
+The ASOCT-MCD package automatically downloads and manages pre-trained models. Models are cached locally following standard ML library conventions:
+Default Cache Directories
+Linux/macOS:
+```
+~/.cache/asoct_mcd/models/
+├── sam_vit_b_01ec64.pth              # SAM ViT-B segmentation model (~375MB)
+└── spatial_attention_network.pth     # Cell classification model (~1MB)
+```
+Windows:
+```
+C:\Users\<username>\.cache\asoct_mcd\models\
+├── sam_vit_b_01ec64.pth              # SAM ViT-B segmentation model (~375MB)
+└── spatial_attention_network.pth     # Cell classification model (~1MB)
+```
 
 ## Requirements
 - Python >= 3.9

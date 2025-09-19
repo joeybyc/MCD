@@ -1,16 +1,12 @@
 """
 Simple cell detection example.
-Usage: python simple_detection.py path/to/image.png
+Usage: python example2.py image1.png
 """
 
 import sys
 import os
 from pathlib import Path
 
-# Add src to path if running from examples directory
-if 'src' not in sys.path:
-    src_path = Path(__file__).parent.parent / "src"
-    sys.path.insert(0, str(src_path))
 
 from asoct_mcd.pipeline import MCDPipelineBuilder
 from asoct_mcd.image_processing import draw_rectangles
