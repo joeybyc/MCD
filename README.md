@@ -36,11 +36,6 @@ pipeline = MCDPipelineBuilder().from_dict(config).build()
 result = pipeline.detect_cells("image.png")
 ```
 
-```python
-# Using YAML configuration
-pipeline = MCDPipelineBuilder().from_yaml("your_config.yaml").build()
-result = pipeline.detect_cells("image.png")
-```
 
 ### Showcase
 #### Original image
