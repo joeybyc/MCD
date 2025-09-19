@@ -2,28 +2,26 @@
 Author: B. Chen
 
 Model management module for AS-OCT image processing.
-Provides centralized model loading, caching, and lifecycle management.
+Provides unified model creation and management interface.
 """
 
-from .interfaces import BaseModelWrapper, SegmentationModelWrapper, ClassificationModelWrapper
-from .config import ModelConfig, DEFAULT_MODELS
-from .registry import ModelRegistry
-from .wrappers import SAMModelAdapter, PyTorchClassificationAdapter
+from .interfaces import BaseModel, BaseModelLoader
+from .config import BaseModelConfig
+from .factory import ModelFactory, register_model
+from .loaders import HTTPModelLoader
 
 __all__ = [
     # Core interfaces
-    'BaseModelWrapper',
-    'SegmentationModelWrapper', 
-    'ClassificationModelWrapper',
+    'BaseModel',
+    'BaseModelLoader',
     
     # Configuration
-    'ModelConfig',
-    'DEFAULT_MODELS',
+    'BaseModelConfig',
     
-    # Registry for centralized management
-    'ModelRegistry',
+    # Factory and registration
+    'ModelFactory',
+    'register_model',
     
-    # Adapter classes for integration
-    'SAMModelAdapter',
-    'PyTorchClassificationAdapter'
+    # Loaders
+    'HTTPModelLoader'
 ]

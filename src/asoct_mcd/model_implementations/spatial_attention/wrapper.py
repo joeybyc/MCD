@@ -1,23 +1,22 @@
 """
 Author: B. Chen
 
-PyTorch model wrapper implementation for classification models.
+Spatial attention network wrapper implementation.
 """
 
 import cv2
 import numpy as np
-from typing import Dict, Any, List
+from typing import List
 import torch
 import torch.nn as nn
 from torchvision import transforms
 
-from ..interfaces import ClassificationModelWrapper
-from ..config import ModelConfig
-from ..loaders import ModelLoader
+from ...model_management import BaseModel, HTTPModelLoader, register_model
+from .config import SpatialAttentionConfig
 
 
 class SpatialAttention(nn.Module):
-    """Spatial attention module from original code."""
+    """Spatial attention module."""
     
     def __init__(self):
         super(SpatialAttention, self).__init__()
@@ -36,7 +35,7 @@ class SpatialAttention(nn.Module):
 
 
 class SpatialAttentionNetwork(nn.Module):
-    """Spatial Attention Network from original code."""
+    """Spatial attention network for cell classification."""
     
     def __init__(self, size_img=20):
         super(SpatialAttentionNetwork, self).__init__()
@@ -89,111 +88,95 @@ class SpatialAttentionNetwork(nn.Module):
         return x
 
 
-class PyTorchClassificationWrapper(ClassificationModelWrapper):
-    """Wrapper for PyTorch classification models."""
+@register_model("spatial_attention_network")
+class SpatialAttentionWrapper(BaseModel):
+    """Spatial attention network wrapper."""
     
-    def __init__(self, config: ModelConfig):
-        """
-        Initialize PyTorch classification wrapper.
-        
-        Args:
-            config: Model configuration
-        """
-        super().__init__(config.name, config.device)
-        self.config = config
-        self.size_img = config.model_params.get('size_img', 20)
-        self.loader = ModelLoader()
+    def __init__(self, config: SpatialAttentionConfig = None):
+        """Initialize spatial attention wrapper."""
+        self.config = config or SpatialAttentionConfig()
+        self.loader = HTTPModelLoader(self.config.cache_dir)
+        self._model = None
+        self.name = self.config.name
         
         # Setup transforms
         self.transform = transforms.Compose([
             transforms.ToPILImage(),
-            transforms.Resize((self.size_img, self.size_img)),
+            transforms.Resize((self.config.size_img, self.config.size_img)),
             transforms.ToTensor()
         ])
     
     def load(self) -> None:
-        """Load PyTorch model into memory."""
+        """Load spatial attention model into memory."""
         if self.is_loaded:
             return
         
-        # Ensure model file is available
-        model_path = self.loader.prepare_model(self.config)
+        model_path = self.loader.download_if_needed(self.config)
         
         try:
-            # Initialize spatial attention network
-            self.model = SpatialAttentionNetwork(size_img=self.size_img)
+            self._model = SpatialAttentionNetwork(size_img=self.config.size_img)
+            state_dict = torch.load(model_path, map_location=self.config.resolve_device())
+            self._model.load_state_dict(state_dict)
+            self._model.to(self.config.resolve_device())
+            self._model.eval()
             
-            # Load state dict
-            state_dict = torch.load(model_path, map_location=self.device)
-            self.model.load_state_dict(state_dict)
-            
-            # Move to device and set to eval mode
-            self.model.to(self.device)
-            self.model.eval()
-            
-            self.is_loaded = True
-            print(f"Successfully loaded PyTorch model: {self.name}")
+            print(f"Loaded spatial attention model: {self.name}")
             
         except Exception as e:
-            raise RuntimeError(f"Failed to load PyTorch model {self.name}: {e}")
+            raise RuntimeError(f"Failed to load spatial attention model: {e}")
     
     def unload(self) -> None:
-        """Release PyTorch model from memory."""
-        if self.model is not None:
-            del self.model
-            self.model = None
+        """Release model from memory."""
+        if self._model is not None:
+            del self._model
+            self._model = None
         
-        self.is_loaded = False
-        
-        # Clear GPU cache if using CUDA
-        if self.device == 'cuda':
+        if self.config.resolve_device() == 'cuda':
             torch.cuda.empty_cache()
     
-    def predict(self, image: np.ndarray) -> int:
+    @property
+    def is_loaded(self) -> bool:
+        """Check if model is loaded."""
+        return self._model is not None
+    
+    def classify(self, image: np.ndarray) -> int:
         """
-        Predict classification for single image.
+        Classify single image.
         
         Args:
             image: Input image as numpy array
             
         Returns:
             Classification result (0 for noise, 1 for cell)
-            
-        Raises:
-            RuntimeError: If model is not loaded
         """
         if not self.is_loaded:
-            raise RuntimeError(f"Model {self.name} is not loaded")
+            self.load()
         
-        # Preprocess image
+        # Convert to grayscale if needed
         if len(image.shape) == 3:
             image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         
-        # Transform image
-        image_tensor = self.transform(image).unsqueeze(0).to(self.device)
+        # Transform and predict
+        image_tensor = self.transform(image).unsqueeze(0).to(self.config.resolve_device())
         
-        # Predict
         with torch.no_grad():
-            output = self.model(image_tensor)
+            output = self._model(image_tensor)
             _, predicted = torch.max(output.data, 1)
-            
+        
         return predicted.item()
     
-    def predict_batch(self, images: List[np.ndarray]) -> List[int]:
+    def classify_batch(self, images: List[np.ndarray]) -> List[int]:
         """
-        Predict classification for batch of images.
+        Classify batch of images.
         
         Args:
-            images: List of input images as numpy arrays
+            images: List of input images
             
         Returns:
-            List of classification results (0 for noise, 1 for cell)
-            
-        Raises:
-            RuntimeError: If model is not loaded
+            List of classification results
         """
         if not self.is_loaded:
-            raise RuntimeError(f"Model {self.name} is not loaded")
+            self.load()
         
         if not images:
             return []
@@ -205,23 +188,11 @@ class PyTorchClassificationWrapper(ClassificationModelWrapper):
                 image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
             processed_images.append(self.transform(image))
         
-        # Stack into batch tensor
-        batch_tensor = torch.stack(processed_images).to(self.device)
+        # Stack and predict
+        batch_tensor = torch.stack(processed_images).to(self.config.resolve_device())
         
-        # Predict
         with torch.no_grad():
-            outputs = self.model(batch_tensor)
+            outputs = self._model(batch_tensor)
             _, predictions = torch.max(outputs.data, 1)
-            
+        
         return predictions.tolist()
-    
-    def get_model_info(self) -> Dict[str, Any]:
-        """Get PyTorch model metadata information."""
-        return {
-            'name': self.name,
-            'type': 'pytorch_classification',
-            'size_img': self.size_img,
-            'device': self.device,
-            'is_loaded': self.is_loaded,
-            'checkpoint_path': self.config.local_path
-        }
