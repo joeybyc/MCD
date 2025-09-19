@@ -8,32 +8,61 @@ A Python package for detecting minuscule cells in Anterior Segment Optical Coher
 pip install asoct-mcd
 ```
 
-## Quick Start
+## Basic Usage
 
 ```python
-from asoct_mcd import CellDetector
+from asoct_mcd.pipeline import MCDPipelineBuilder
 
-# Initialize detector
-detector = CellDetector()
+# Create pipeline with default settings
+pipeline = MCDPipelineBuilder().build()
 
-# Detect cells in a single image
-result = detector.detect("path/to/image.png")
+# Detect cells in image
+result = pipeline.detect_cells("path/to/image.png")
 
-# Process multiple images
-results = detector.detect_batch("path/to/images/")
+# Print results
+print(f"Detected {result.cell_count} cells")
+print(f"Cell locations: {result.cell_locations}")
 ```
 
-## Requirements
+## Custom Configuration
 
+```python
+# Using dictionary configuration
+config = {
+    "threshold": {"lambda_factor": 0.9, "method": "isodata"},
+}
+
+pipeline = MCDPipelineBuilder().from_dict(config).build()
+result = pipeline.detect_cells("image.png")
+```
+
+```python
+# Using YAML configuration
+pipeline = MCDPipelineBuilder().from_yaml("your_config.yaml").build()
+result = pipeline.detect_cells("image.png")
+```
+
+
+## Requirements
 - Python >= 3.9
-- PyTorch >= 1.12.0
-- OpenCV >= 4.8.0
 - See requirements.txt for full list
 
-## Development Status
+## Citation
 
-This package is currently under active development. APIs may change between versions.
+arXiv: https://arxiv.org/abs/2503.12249
 
-## License
+To cite MCD in publications, please use:
 
-MIT License - see LICENSE file for details.
+```bibtex
+@article{chen2025minuscule,
+      title={Minuscule Cell Detection in AS-OCT Images with Progressive Field-of-View Focusing}, 
+      author={Boyu Chen, Ameenat L. Solebo, Daqian Shi, Jinge Wu, Paul Taylor},
+      year={2025},
+      journal={arXiv preprint arXiv:2503.12249}
+}
+
+```
+## Acknowledgements
+Thanks to the support of AWS Doctoral Scholarship in Digital Innovation, awarded through the UCL Centre for Digital Innovation. We thank them for their generous support.
+![](readme_images/AWS.png)
+![](readme_images/CDI.png)
