@@ -28,4 +28,4 @@ preprocessing:
   nlm_search_window: 21
 
 device: "auto"
-model_cache_dir: "./models"
+model_cache_dir: null  # Use system default cache directory
