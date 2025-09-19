@@ -1,0 +1,31 @@
+# Default MCD Pipeline Configuration
+# Author: B. Chen
+
+segmentation:
+  method: "zero_shot"
+  model_name: "sam_vit_b" 
+  prompt_generator: "i2acp"
+  offset_ratio: 0.02
+  area_ratio_threshold: 0.65
+
+threshold:
+  method: "otsu"
+  lambda_factor: 0.83
+  min_size: 1
+  max_size: 25
+
+classification:
+  model_name: "spatial_attention_network"
+  crop_size: 20
+  batch_size: 128
+
+preprocessing:
+  enable: true
+  denoising_method: "nlm"
+  convert_to_grayscale: true
+  nlm_h: 10
+  nlm_template_window: 7
+  nlm_search_window: 21
+
+device: "auto"
+model_cache_dir: "./models"

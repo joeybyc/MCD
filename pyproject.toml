@@ -1,6 +1,10 @@
 [build-system]
-requires = ["setuptools>=61.0", "wheel"]
+requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
 
 [project]
 name = "asoct-mcd"
@@ -9,175 +13,42 @@ description = "Minuscule Cell Detection in AS-OCT Medical Images"
 readme = "README.md"
 license = {text = "MIT"}
 authors = [
-    {name = "B. Chen", email = "your.email@example.com"},
+    {name = "B. Chen"},
 ]
 maintainers = [
-    {name = "B. Chen", email = "your.email@example.com"},
+    {name = "B. Chen"},
 ]
-classifiers = [
-    "Development Status :: 3 - Alpha",
-    "Intended Audience :: Science/Research",
-    "Intended Audience :: Healthcare Industry", 
-    "License :: OSI Approved :: MIT License",
-    "Operating System :: OS Independent",
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
-    "Topic :: Scientific/Engineering :: Medical Science Apps.",
-    "Topic :: Scientific/Engineering :: Image Recognition",
-    "Topic :: Scientific/Engineering :: Artificial Intelligence",
-]
+urls = { text = "https://github.com/joeybyc/MCD" }
 keywords = [
     "medical-imaging",
     "cell-detection", 
     "optical-coherence-tomography",
     "computer-vision",
-    "deep-learning",
-    "sam",
-    "attention-mechanism"
+    "deep-learning"
 ]
+
+classifiers = [
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Healthcare Industry", 
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11"
+]
+
 dependencies = [
-    "numpy>=1.24.0",
-    "opencv-python>=4.8.0",
-    "torch>=1.12.0",
-    "torchvision>=0.13.0",
-    "scikit-image>=0.19.0",
-    "scikit-learn>=1.1.0",
-    "matplotlib>=3.6.0",
-    "pandas>=1.5.0",
-    "pyyaml>=6.0",
+    "numpy>=1.26.3",
+    "matplotlib>=3.8.2",
+    "pandas>=2.1.4",
+    "opencv-python>=4.9.0.80",
+    "torch>=2.1.2",
+    "torchvision>=0.16.2",
+    "scikit-image>=0.22.0",
+    "scikit-learn>=1.4.0",
     "yacs>=0.1.8",
     "segment-anything>=1.0",
-    "pillow>=9.0.0",
-    "click>=8.0.0",
-    "tqdm>=4.64.0",
-    "requests>=2.28.0",
-    "packaging>=21.0",
+    "tqdm>=4.67.1"
 ]
+
 requires-python = ">=3.9"
-
-[project.optional-dependencies]
-dev = [
-    "pytest>=7.0.0",
-    "pytest-cov>=4.0.0",
-    "black>=22.0.0",
-    "isort>=5.10.0",
-    "flake8>=5.0.0",
-    "mypy>=0.991",
-    "sphinx>=5.0.0",
-    "sphinx-rtd-theme>=1.0.0",
-    "pre-commit>=2.20.0",
-]
-test = [
-    "pytest>=7.0.0",
-    "pytest-cov>=4.0.0",
-    "pytest-mock>=3.8.0",
-]
-docs = [
-    "sphinx>=5.0.0",
-    "sphinx-rtd-theme>=1.0.0",
-    "myst-parser>=0.18.0",
-]
-
-[project.urls]
-Homepage = "https://github.com/joeybyc/MCD"
-Repository = "https://github.com/joeybyc/MCD"
-Documentation = "https://github.com/joeybyc/MCD#readme"
-"Bug Tracker" = "https://github.com/joeybyc/MCD/issues"
-
-[project.scripts]
-asoct-mcd = "asoct_mcd.cli.commands:main"
-
-[tool.setuptools]
-package-dir = {"" = "src"}
-
-[tool.setuptools.packages.find]
-where = ["src"]
-
-[tool.setuptools.package-data]
-"asoct_mcd.config" = ["*.yaml"]
-
-[tool.black]
-line-length = 88
-target-version = ['py39']
-include = '\.pyi?$'
-extend-exclude = '''
-/(
-  # directories
-  \.eggs
-  | \.git
-  | \.hg
-  | \.mypy_cache
-  | \.tox
-  | \.venv
-  | build
-  | dist
-)/
-'''
-
-[tool.isort]
-profile = "black"
-multi_line_output = 3
-line_length = 88
-known_first_party = ["asoct_mcd"]
-
-[tool.pytest.ini_options]
-minversion = "7.0"
-addopts = "-ra -q --strict-markers --strict-config"
-testpaths = [
-    "tests",
-]
-python_files = [
-    "test_*.py",
-    "*_test.py",
-]
-markers = [
-    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
-    "integration: marks tests as integration tests",
-    "unit: marks tests as unit tests",
-]
-
-[tool.coverage.run]
-source = ["src"]
-omit = [
-    "*/tests/*",
-    "*/test_*",
-    "setup.py",
-]
-
-[tool.coverage.report]
-exclude_lines = [
-    "pragma: no cover",
-    "def __repr__",
-    "if self.debug:",
-    "if settings.DEBUG",
-    "raise AssertionError",
-    "raise NotImplementedError",
-    "if 0:",
-    "if __name__ == .__main__.:",
-]
-
-[tool.mypy]
-python_version = "3.9"
-warn_return_any = true
-warn_unused_configs = true
-disallow_untyped_defs = true
-disallow_incomplete_defs = true
-check_untyped_defs = true
-disallow_untyped_decorators = true
-no_implicit_optional = true
-warn_redundant_casts = true
-warn_unused_ignores = true
-warn_no_return = true
-warn_unreachable = true
-strict_equality = true
-
-[[tool.mypy.overrides]]
-module = [
-    "cv2.*",
-    "segment_anything.*", 
-    "yacs.*",
-    "skimage.*",
-]
-ignore_missing_imports = true

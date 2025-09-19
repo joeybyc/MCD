@@ -19,15 +19,12 @@ detector = CellDetector()
 # Detect cells in a single image
 result = detector.detect("path/to/image.png")
 
-# Process multiple images
-results = detector.detect_batch("path/to/images/")
 ```
 
 ## Requirements
 
 - Python >= 3.9
 - PyTorch >= 1.12.0
-- OpenCV >= 4.8.0
 - See requirements.txt for full list
 
 ## Development Status
