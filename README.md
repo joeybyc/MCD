@@ -42,6 +42,14 @@ pipeline = MCDPipelineBuilder().from_yaml("your_config.yaml").build()
 result = pipeline.detect_cells("image.png")
 ```
 
+### Showcase
+#### Original image
+![](readme_images/asoct_image.png)
+#### Anterior Chamber Mask
+![](readme_images/chamber_mask.png)
+#### Cell Dection by MCD
+![](readme_images/asoct_image_with_cell_boxes.png)
+
 
 ## Model Storage and Management
 Default Model Storage Locations
