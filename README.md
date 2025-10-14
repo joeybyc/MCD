@@ -68,17 +68,16 @@ C:\Users\<username>\.cache\asoct_mcd\models\
 - See requirements.txt for full list
 
 ## Citation
-
-arXiv: https://arxiv.org/abs/2503.12249
-
 To cite MCD in publications, please use:
 
 ```bibtex
-@article{chen2025minuscule,
-      title={Minuscule Cell Detection in AS-OCT Images with Progressive Field-of-View Focusing}, 
-      author={Boyu Chen, Ameenat L. Solebo, Daqian Shi, Jinge Wu, Paul Taylor},
-      year={2025},
-      journal={arXiv preprint arXiv:2503.12249}
+@inproceedings{chen2025minuscule,
+  title={Minuscule Cell Detection in AS-OCT Images with Progressive Field-of-View Focusing},
+  author={Chen, Boyu and Solebo, Ameenat and Shi, Daqian and Wu, Jinge and Taylor, Paul},
+  booktitle={International Conference on Medical Image Computing and Computer-Assisted Intervention},
+  pages={365--375},
+  year={2025},
+  organization={Springer}
 }
 
 ```
